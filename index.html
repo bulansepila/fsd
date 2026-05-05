@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kedai Kopi Nusantara | Coffee Shop</title>
+    <style>
+        :root {
+            --brown-dark: #3E2723;
+            --brown: #5D4037;
+            --brown-medium: #6D4C41;
+            --brown-light: #8D6E63;
+            --brown-pale: #A1887F;
+            --cream: #FFF8F0;
+            --white: #FFFFFF;
+            --gold: #D4A853;
+            --gold-light: #E8C97A;
+            --gold-dark: #B8942E;
+            --text-dark: #2C1810;
+            --text-light: #5D4037;
+            --shadow: 0 4px 20px rgba(62, 39, 35, 0.12);
+            --shadow-lg: 0 10px 40px rgba(62, 39, 35, 0.18);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============ NAVBAR ============ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 248, 240, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(180, 130, 60, 0.2);
+            transition: var(--transition);
+            padding: 0 20px;
+        }
+
+        .navbar.scrolled {
+            box-shadow: var(--shadow-lg);
+            background: rgba(255, 248, 240, 0.97);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--brown-dark);
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+            z-index: 1001;
+        }
+
+        .navbar-logo .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--brown);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gold-light);
+            border: 2px solid var(--gold);
+            flex-shrink: 0;
+        }
+
+        .navbar-logo span {
+            color: var(--gold-dark);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--brown-medium);
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 10px 16px;
+            border-radius: 25px;
+            transition: var(--transition);
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--brown-dark);
+            background: rgba(180, 130, 60, 0.1);
+        }
+
+        .nav-links a.cta-nav {
+            background: var(--gold);
+            color: var(--brown-dark);
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 25px;
+            box-shadow: 0 2px 12px rgba(180, 130, 60, 0.3);
+        }
+
+        .nav-links a.cta-nav:hover {
+            background: var(--gold-dark);
+            color: #fff;
+            box-shadow: 0 4px 18px rgba(180, 130, 60, 0.45);
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            z-index: 1001;
+            padding: 8px;
+            background: none;
+            border: none;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 2.5px;
+            background: var(--brown-dark);
+            border-radius: 3px;
+            transition: var(--transition);
+            transform-origin: center;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px 60px;
+            background: linear-gradient(170deg, #FFF8F0 0%, #FDF0E0 30%, #FAE8D4 60%, #FFF8F0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -120px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 168, 83, 0.13) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(139, 90, 60, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1100px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h4 {
+            color: var(--gold-dark);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            display: inline-block;
+            background: rgba(212, 168, 83, 0.12);
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 800;
+            color: var(--brown-dark);
+            line-height: 1.15;
+            margin-bottom: 18px;
+            letter-spacing: -1px;
+        }
+
+        .hero-text h1 span {
+            color: var(--gold-dark);
+            position: relative;
+        }
+
+        .hero-text h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: rgba(212, 168, 83, 0.3);
+            border-radius: 3px;
+            z-index: -1;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            max-width: 420px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            letter-spacing: 0.3px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--brown);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(93, 64, 55, 0.35);
+        }
+        .btn-primary:hover {
+            background: var(--brown-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(62, 39, 35, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--brown);
+            border: 2px solid var(--brown-light);
+        }
+        .btn-outline:hover {
+            background: var(--brown);
+            color: #fff;
+            border-color: var(--brown);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-image .img-wrapper {
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 1 / 1;
+            background: radial-gradient(circle at center, #fff 0%, #f5e6d3 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9rem;
+            box-shadow: 0 20px 50px rgba(62, 39, 35, 0.2);
+            border: 4px solid rgba(212, 168, 83, 0.4);
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .img-wrapper .coffee-emoji {
+            animation: steam 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-16px);
+            }
+        }
+
+        @keyframes steam {
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.05);
+            }
+        }
+
+        .hero-badge {
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            background: var(--gold);
+            color: var(--brown-dark);
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 10px 18px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            letter-spacing: 1px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 168, 83, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 18px rgba(212, 168, 83, 0);
+            }
+        }
+
+        /* ============ SECTIONS GENERAL ============ */
+        section {
+            padding: 80px 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 55px;
+        }
+
+        .section-header h4 {
+            color: var(--gold-dark);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+            color: var(--brown-dark);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .section-header .divider {
+            width: 50px;
+            height: 3px;
+            background: var(--gold);
+            margin: 14px auto 0;
+            border-radius: 2px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ============ ABOUT ============ */
+        .about-section {
+            background: var(--white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            display: flex;
+            justify-content: center;
+        }
+
+        .about-image .about-img-placeholder {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 4 / 3;
+            background: linear-gradient(135deg, #e8d5c4 0%, #d7c0aa 40%, #c4a88b 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image .about-img-placeholder::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            background: rgba(212, 168, 83, 0.25);
+            border-radius: 50%;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            color: var(--brown-dark);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .about-text p {
+            color: var(--text-light);
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        .about-text .gold-highlight {
+            color: var(--gold-dark);
+            font-weight: 600;
+        }
+
+        .about-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--brown);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--brown-light);
+            font-weight: 500;
+        }
+
+        /* ============ MENU ============ */
+        .menu-section {
+            background: var(--cream);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 28px;
+        }
+
+        .menu-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 28px 22px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(180, 130, 60, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(212, 168, 83, 0.4);
+        }
+
+        .menu-card .menu-icon {
+            font-size: 3.5rem;
+            margin-bottom: 14px;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .menu-card:hover .menu-icon {
+            transform: scale(1.15);
+        }
+
+        .menu-card h3 {
+            color: var(--brown-dark);
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .menu-card .menu-desc {
+            color: var(--brown-light);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .menu-card .menu-price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--gold-dark);
+        }
+
+        .menu-card .badge-popular {
+            position: absolute;
+            top: 14px;
+            right: -32px;
+            background: var(--gold);
+            color: var(--brown-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 35px;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+        }
+
+        /* ============ GALLERY ============ */
+        .gallery-section {
+            background: var(--white);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 16px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .gallery-item:nth-child(1) {
+            background: #f5e1c8;
+        }
+        .gallery-item:nth-child(2) {
+            background: #e8d5c0;
+        }
+        .gallery-item:nth-child(3) {
+            background: #f0ddd0;
+        }
+        .gallery-item:nth-child(4) {
+            background: #fdf0e2;
+        }
+        .gallery-item:nth-child(5) {
+            background: #f8e8d6;
+        }
+        .gallery-item:nth-child(6) {
+            background: #efe0d2;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.04);
+            box-shadow: var(--shadow-lg);
+            border: 2px solid var(--gold);
+        }
+
+        .gallery-item::after {
+            content: '🔍';
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: var(--transition);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* ============ TESTIMONIALS ============ */
+        .testimonials-section {
+            background: var(--cream);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--gold);
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .testimonial-card .stars {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .testimonial-card p {
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 14px;
+            line-height: 1.7;
+        }
+
+        .testimonial-card .author {
+            font-weight: 700;
+            color: var(--brown-dark);
+        }
+
+        .testimonial-card .author-role {
+            font-size: 0.8rem;
+            color: var(--brown-light);
+        }
+
+        /* ============ CONTACT ============ */
+        .contact-section {
+            background: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-info h3 {
+            font-size: 1.6rem;
+            color: var(--brown-dark);
+            margin-bottom: 12px;
+        }
+
+        .contact-info p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            color: var(--brown-medium);
+            font-weight: 500;
+        }
+
+        .contact-detail .icon-dot {
+            width: 36px;
+            height: 36px;
+            background: rgba(212, 168, 83, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e8d5c4;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background: var(--cream);
+            color: var(--text-dark);
+            resize: vertical;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 168, 83, 0.1);
+            background: #fff;
+        }
+
+        .contact-form textarea {
+            min-height: 120px;
+        }
+
+        .contact-form button {
+            align-self: flex-start;
+        }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            background: var(--brown-dark);
+            color: #d7c0aa;
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h4 {
+            color: var(--gold-light);
+            margin-bottom: 12px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-col p,
+        .footer-col a {
+            color: #c4a88b;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 6px;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--gold-light);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 18px;
+            font-size: 0.85rem;
+            color: #a08870;
+        }
+
+        .footer-bottom .gold-heart {
+            color: var(--gold);
+        }
+
+        /* ============ BACK TO TOP ============ */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: var(--brown);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3rem;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--gold-dark);
+            transform: translateY(-4px);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 900px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text p {
+                max-width: 100%;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-image .img-wrapper {
+                max-width: 280px;
+                font-size: 6rem;
+            }
+
+            .hero-badge {
+                right: -20px;
+                bottom: 0;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-stats {
+                justify-content: center;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form button {
+                align-self: stretch;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                max-width: 340px;
+                height: 100vh;
+                background: rgba(255, 248, 240, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 100px 30px 30px;
+                gap: 6px;
+                transition: var(--transition);
+                box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.05rem;
+                padding: 14px 20px;
+                width: 100%;
+                text-align: center;
+                border-radius: 12px;
+            }
+
+            .nav-links a.cta-nav {
+                margin-top: 10px;
+            }
+
+            /* Overlay */
+            .nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+
+            .nav-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .navbar-logo {
+                font-size: 1.1rem;
+            }
+
+            .navbar-logo .logo-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 1.2rem;
+            }
+
+            .btn {
+                padding: 12px 22px;
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                padding: 90px 15px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-logo">
+                <div class="logo-icon">☕</div>
+                Kedai<span>Kopi</span>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero" class="active" data-section="hero">Beranda</a></li>
+                <li><a href="#about" data-section="about">Tentang</a></li>
+                <li><a href="#menu" data-section="menu">Menu</a></li>
+                <li><a href="#gallery" data-section="gallery">Galeri</a></li>
+                <li><a href="#testimonials" data-section="testimonials">Ulasan</a></li>
+                <li><a href="#contact" data-section="contact">Kontak</a></li>
+                <li><a href="#contact" class="cta-nav">Pesan Sekarang</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h4>☕ Kopi Premium Nusantara</h4>
+                <h1>Nikmati <span>Secangkir</span> Kebahagiaan</h1>
+                <p>Dari biji kopi pilihan terbaik nusantara, diseduh dengan penuh cinta oleh barista berpengalaman kami. Rasakan pengalaman kopi yang tak terlupakan.</p>
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn btn-primary">Lihat Menu</a>
+                    <a href="#contact" class="btn btn-outline">Kunjungi Kami</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="img-wrapper">
+                    <span class="coffee-emoji">☕</span>
+                </div>
+                <div class="hero-badge">⭐ 4.9 / 5.0</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT ==================== -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h4>Tentang Kami</h4>
+                <h2>Cerita di Balik Setiap Cangkir</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="about-grid">
+                <div class="about-image">
+                    <div class="about-img-placeholder">🫘</div>
+                </div>
+                <div class="about-text">
+                    <h3>Berdiri Sejak 2015</h3>
+                    <p>Kedai Kopi Nusantara hadir dari kecintaan kami pada kopi asli Indonesia. Kami bekerja sama langsung dengan petani lokal dari <span class="gold-highlight">Aceh, Toraja, hingga Papua</span> untuk menghadirkan biji kopi berkualitas terbaik.</p>
+                    <p>Setiap cangkir yang kami sajikan adalah hasil dari proses teliti — mulai dari pemetikan, sangrai, hingga penyeduhan yang presisi.</p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">5000+</div>
+                            <div class="stat-label">Pelanggan Puas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Varian Kopi</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Tahun Berdiri</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MENU ==================== -->
+    <section class="menu-section" id="menu">
+        <div class="container">
+            <div class="section-header">
+                <h4>Menu Favorit</h4>
+                <h2>Pilihan Terbaik Untuk Anda</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-card">
+                    <span class="badge-popular">TOP</span>
+                    <span class="menu-icon">☕</span>
+                    <h3>Espresso Klasik</h3>
+                    <p class="menu-desc">Shot espresso murni dari biji Arabica pilihan.</p>
+                    <p class="menu-price">Rp 25.000</p>
+                </div>
+                <div class="menu-card">
+                    <span class="menu-icon">🥤</span>
+                    <h3>Cappuccino Creamy</h3>
+                    <p class="menu-desc">Espresso + susu steamed + foam lembut.</p>
+                    <p class="menu-price">Rp 32.000</p>
+                </div>
+                <div class="menu-card">
+                    <span class="badge-popular">TOP</span>
+                    <span class="menu-icon">🍵</span>
+                    <h3>Matcha Latte</h3>
+                    <p class="menu-desc">Matcha premium Jepang dengan susu hangat.</p>
+                    <p class="menu-price">Rp 35.000</p>
+                </div>
+                <div class="menu-card">
+                    <span class="menu-icon">🧊</span>
+                    <h3>Iced Americano</h3>
+                    <p class="menu-desc">Espresso + air dingin, segar dan bold.</p>
+                    <p class="menu-price">Rp 28.000</p>
+                </div>
+                <div class="menu-card">
+                    <span class="menu-icon">🥐</span>
+                    <h3>Croissant Butter</h3>
+                    <p class="menu-desc">Pastry renyah pendamping kopi Anda.</p>
+                    <p class="menu-price">Rp 22.000</p>
+                </div>
+                <div class="menu-card">
+                    <span class="menu-icon">🍰</span>
+                    <h3>Tiramisu Cake</h3>
+                    <p class="menu-desc">Dessert klasik dengan sentuhan kopi.</p>
+                    <p class="menu-price">Rp 38.000</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== GALLERY ==================== -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h4>Galeri</h4>
+                <h2>Suasana Kedai Kami</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">🫘</div>
+                <div class="gallery-item">☕</div>
+                <div class="gallery-item">🍪</div>
+                <div class="gallery-item">🪴</div>
+                <div class="gallery-item">📚</div>
+                <div class="gallery-item">🕯️</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TESTIMONIALS ==================== -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h4>Ulasan Pelanggan</h4>
+                <h2>Apa Kata Mereka?</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Kopi terenak yang pernah saya coba! Suasananya juga nyaman banget buat kerja. Pasti balik lagi!"</p>
+                    <div class="author">Rina Amelia</div>
+                    <div class="author-role">Pelanggan Setia</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Baristanya ramah dan sangat profesional. Espresso mereka benar-benar otentik, strong banget!"</p>
+                    <div class="author">Andi Prasetyo</div>
+                    <div class="author-role">Coffee Enthusiast</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"Tempatnya instagramable, cocok buat nongkrong bareng teman. Matcha Latte-nya juara!"</p>
+                    <div class="author">Siska Wijaya</div>
+                    <div class="author-role">Food Blogger</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT ==================== -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h4>Hubungi Kami</h4>
+                <h2>Pesan atau Kunjungi Kedai</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Kami Siap Melayani</h3>
+                    <p>Punya pertanyaan atau ingin reservasi tempat? Jangan ragu untuk menghubungi kami melalui form di samping atau datang langsung ke kedai.</p>
+                    <div class="contact-detail">
+                        <div class="icon-dot">📍</div>
+                        Jl. Kopi Nusantara No. 17, Jakarta Selatan
+                    </div>
+                    <div class="contact-detail">
+                        <div class="icon-dot">📞</div>
+                        +62 812-3456-7890
+                    </div>
+                    <div class="contact-detail">
+                        <div class="icon-dot">✉️</div>
+                        halo@kedaikopinusantara.id
+                    </div>
+                    <div class="contact-detail">
+                        <div class="icon-dot">🕐</div>
+                        Setiap Hari: 07.00 - 22.00 WIB
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" placeholder="Nama Lengkap" required id="formName">
+                    <input type="email" placeholder="Alamat Email" required id="formEmail">
+                    <textarea placeholder="Tulis pesan Anda di sini..." required id="formMessage"></textarea>
+                    <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>☕ Kedai Kopi Nusantara</h4>
+                <p>Kopi berkualitas dari petani lokal untuk Anda. Nikmati setiap tegukan.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Menu</h4>
+                <a href="#menu">Espresso</a>
+                <a href="#menu">Cappuccino</a>
+                <a href="#menu">Matcha Latte</a>
+                <a href="#menu">Pastry</a>
+            </div>
+            <div class="footer-col">
+                <h4>Ikuti Kami</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kedai Kopi Nusantara. Dibuat dengan <span class="gold-heart">❤</span> untuk pecinta kopi Indonesia.</p>
+        </div>
+    </footer>
+
+    <!-- ==================== BACK TO TOP ==================== -->
+    <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // === DOM Elements ===
+        const navbar = document.getElementById('navbar');
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+        const backToTop = document.getElementById('backToTop');
+        const contactForm = document.getElementById('contactForm');
+        const allNavLinks = document.querySelectorAll('.nav-links a[data-section]');
+        const sections = document.querySelectorAll('section[id]');
+
+        // === Mobile Menu Toggle ===
+        function openMenu() {
+            navLinks.classList.add('active');
+            hamburger.classList.add('active');
+            navOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            navLinks.classList.remove('active');
+            hamburger.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', () => {
+            if (navLinks.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        navOverlay.addEventListener('click', closeMenu);
+
+        // Close menu when clicking a nav link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                closeMenu();
+            });
+        });
+
+        // === Navbar Scroll Effect ===
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            // Navbar shadow
+            if (scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Back to top button
+            if (scrollY > 600) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+
+            // Active nav link based on scroll position
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                const sectionHeight = section.offsetHeight;
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            allNavLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // === Back to Top ===
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // === Contact Form Submission ===
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('formName').value.trim();
+            const email = document.getElementById('formEmail').value.trim();
+            const message = document.getElementById('formMessage').value.trim();
+
+            if (name && email && message) {
+                // Simulasi pengiriman
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = '⏳ Mengirim...';
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+                submitBtn.style.cursor = 'not-allowed';
+
+                setTimeout(() => {
+                    // Tampilkan alert sukses
+                    alert(
+                        '✅ Pesan berhasil dikirim!\n\n' +
+                        'Terima kasih, ' + name +
+                        '. Kami akan menghubungi Anda melalui ' + email +
+                        ' dalam waktu 1x24 jam.\n\n' +
+                        '— Kedai Kopi Nusantara ☕'
+                    );
+
+                    // Reset form
+                    contactForm.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.cursor = 'pointer';
+                }, 1200);
+            }
+        });
+
+        // === Smooth scroll for all anchor links (fallback) ===
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    const offsetTop = targetElement.offsetTop - 75;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // === Initialize: close menu on page load ===
+        closeMenu();
+
+        console.log('☕ Kedai Kopi Nusantara — Landing page siap!');
+        console.log('✨ Semua fungsi berjalan dengan baik.');
+    </script>
+</body>
+</html>
